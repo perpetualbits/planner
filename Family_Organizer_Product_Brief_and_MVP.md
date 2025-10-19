@@ -235,20 +235,32 @@ Buttons: [Generate Groceries] [Swap Meal] [Double Portions]
 ## 21) Deep-Dive Discovery Questionnaire (answer succinctly; use bullets; mark unknowns)
 ### A. Mission, Scope, and Boundaries
 1. **Primary mission**: If the system does only *three* things extraordinarily well, what are they?
-2. **Non-goals**: What problems will we explicitly *not* solve in v1/v2 (e.g., budgeting, school portal scraping)? Why?
-3. **Failure posture**: In what scenarios is it acceptable for the system to *do nothing* rather than risk wrong output?
-
+   one: the system has moved the cognitive load of planning around family issues out of the primary care-givers heads, and they can trust the system to do this for them, or at least remind and assist when relevant.
+   two: all basic things like chores and upkeep are planned and presented clearly and can be ticked off by users when they did them.
+   three: The system can import and export calendars from schools, sportsclubs, garbage collection by the municipality (we have separate collection days for plastic, paper, organic and "rest")
+3. **Non-goals**: What problems will we explicitly *not* solve in v1/v2 (e.g., budgeting, school portal scraping)? Why?
+   Budgetting and school portal scraping is too complex for now and requires too much coupling with external systems that require possible non-standard ways of scraping. Importing ICS files would be standard, but automatically getting homework from systems meant for students is a bit too complex for now.
+4. **Failure posture**: In what scenarios is it acceptable for the system to *do nothing* rather than risk wrong output?
+   Anything that the system is not configured for doing.
 ### B. Family Model & Consent
 4. **Household graph**: Who counts as a member (live-in, co-parent across homes, grandparents, au pairs, roommates)?
-5. **Consent model**: What can adults see from teens? From children? Are there “sealed” items even owners can’t open?
-6. **Shared custody**: How do we represent alternating‑weeks schedules and cross‑house data sharing?
-7. **Guest access**: Temporary codes? NFC tap badges? Time‑boxed permissions?
+   People living in the same house who should share the work, co-parents partly (for instance coordinating buying clothes, schoolsupplies, medicine, and so on), a cleaning lady who should see the cleaning schedule but not the kids homework, au pairs should see the kids homework, roommates count as full members of the house.
+6. **Consent model**: What can adults see from teens? From children? Are there “sealed” items even owners can’t open?
+   Adults can see what teens are willing to share. Children still have some say in this, but less so.
+7. **Shared custody**: How do we represent alternating‑weeks schedules and cross‑house data sharing?
+   House-related things do not need to be shared, but issues about children or other dependants who fall under shared custody need to be shared. Time that people are not present (children at other parent's house, parent who works 6 weeks offshore and is home 6 weeks) needs to be masked for house chores and other planning concerning the house.
+8. **Guest access**: Temporary codes? NFC tap badges? Time‑boxed permissions?
+   Temporary login with timed auto-logout.
 
 ### C. Fairness, Load & Motivation
 8. **Fairness metric**: How do *you* define fair? (time spent, effort, unpleasantness, reliability, skill growth)
+   The system is not meant as a replacement for people working out what is fair. That would be a mistake to even try. Experiencing unpleasantness is a subjective and personal thing, differs per person. The system should give insight in time taken to do tasks, if people are willing to enter start and end times for chores. But even without that, just listing who did what per day or week is insightful, and shows the load distribution. Ideally, the system should just present all work that needs to be done, and people should negotiate their share in an amenable manner.
 9. **Rotation rules**: What constraints exist (age ≥ X, allergies, strength, school nights, religious days)?
+  If time periods are not available for members to work (other duties, holy days), the calendar should just block those, and people should still negotiate the work among themselves. Again, the system is not meant as a work distributor, but as a planner.
 10. **Negotiation**: How do members propose swaps/deferments without shaming? (reasons, limits, cooldowns)
+   If a task is done, the person who completed it should enter that in the system. If it is not entered as completed, it should simply be marked as such. The system is not meant to mediate or negotiate. It is meant to make organising easy and remove headache, not to replace inter-human dynamics.
 11. **Motivation style**: Points/badges/streaks vs. intrinsic celebrations? Family rewards vs. individual?
+   This is not a goal for this system. It should just provide clarity of what work is done, and yes it is clear who did what. Beyond that, artificial rewards by a program such as smileys are not wanted. People reward people, if only by having peace of mind and harmony.
 
 ### D. Calendars & Time Semantics
 12. **Authoritative calendars**: Google, Apple, Outlook, school ICS, sports teams? Who can write back?
