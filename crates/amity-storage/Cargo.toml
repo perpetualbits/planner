@@ -1,0 +1,30 @@
+# amity-storage — persistence layer.
+#
+# This crate owns the SQLite database connection pool, all migrations, and
+# repository functions. It depends on amity-core for domain types.
+# It has no HTTP or service concerns — those live in amity-service.
+#
+# See docs/amity_rust_guidelines.md §"Database patterns".
+
+[package]
+name        = "amity-storage"
+description = "Persistence layer for Amity: SQLite repositories and migrations."
+version.workspace    = true
+edition.workspace    = true
+authors.workspace    = true
+license.workspace    = true
+repository.workspace = true
+
+[dependencies]
+amity-core  = { path = "../amity-core" }
+
+serde       = { workspace = true }
+sqlx        = { workspace = true }
+uuid        = { workspace = true }
+time        = { workspace = true }
+thiserror   = { workspace = true }
+tracing     = { workspace = true }
+
+[dev-dependencies]
+# tokio is only needed in tests (for the #[tokio::test] macro).
+tokio       = { workspace = true }

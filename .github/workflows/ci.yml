@@ -1,0 +1,71 @@
+# CI pipeline for Amity.
+#
+# Runs on every push and pull request. All checks must pass before merging.
+# The checks mirror what a contributor runs locally (see CONTRIBUTING.md).
+#
+# Jobs:
+#   check  — formatting, clippy, tests, docs, comment density
+#
+# We intentionally do not split into many parallel jobs at this early stage.
+# A single job keeps the workflow readable and the cache simple. Split when
+# build times make it worthwhile.
+
+name: CI
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+
+env:
+  CARGO_TERM_COLOR: always
+  # Suppress sqlx's online query verification in CI; we rely on the committed
+  # .sqlx/ offline cache instead. The offline cache is generated locally and
+  # committed so that CI does not need a running database.
+  SQLX_OFFLINE: "true"
+
+jobs:
+  check:
+    name: Check
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Rust toolchain
+        # The rust-toolchain.toml at the root pins the exact version.
+        # rustup picks it up automatically when the toolchain file is present.
+        run: rustup show
+
+      - name: Cache Cargo registry and build artefacts
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cargo/registry
+            ~/.cargo/git
+            target/
+          key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-cargo-
+
+      - name: Check formatting
+        run: cargo fmt --all -- --check
+
+      - name: Clippy (pedantic)
+        # -W clippy::pedantic enables all pedantic lints. Warnings are reviewed
+        # and either fixed or explicitly suppressed with a #[allow] and a comment.
+        run: cargo clippy --workspace --all-targets -- -W clippy::pedantic
+
+      - name: Run tests
+        run: cargo test --workspace
+
+      - name: Build documentation
+        # Fails if any public item is missing its doc comment. This enforces the
+        # comment requirement from the coding guidelines mechanically.
+        run: cargo doc --workspace --no-deps --all-features
+
+      - name: Comment density audit
+        # Runs the density check over every Rust source file in the crates/ tree.
+        # Fails the build if any file is below the 50% threshold.
+        run: |
+          find crates -name '*.rs' | xargs scripts/comment-density.sh

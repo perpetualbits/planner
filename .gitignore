@@ -1,0 +1,29 @@
+# Rust build output
+/target/
+crates/*/target/
+apps/*/target/
+apps/*/src-tauri/target/
+
+# sqlx offline query cache — committed to enable offline builds in CI,
+# but local overrides via DATABASE_URL should not be committed.
+# (The .sqlx/ directories inside each crate are committed intentionally.)
+
+# Editor and OS noise
+.DS_Store
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# Local config override (the real config lives in $XDG_CONFIG_HOME/amity/)
+config.toml
+
+# Tauri build outputs
+apps/hub-tauri/dist/
+apps/hub-tauri/node_modules/
+apps/hub-tauri/.tauri/
+
+# Node package manager lockfiles — only pnpm-lock.yaml is canonical
+package-lock.json
+yarn.lock

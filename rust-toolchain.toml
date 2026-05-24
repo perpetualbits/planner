@@ -1,0 +1,4 @@
+# Pin the toolchain so all contributors and CI use the same Rust version.
+# Bump this deliberately, not silently through a CI update.
+[toolchain]
+channel = "stable"

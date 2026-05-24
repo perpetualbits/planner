@@ -1,0 +1,187 @@
+/* style.css — hub application styles.
+ *
+ * Design principles (from brief §3 and §12.4):
+ *   • Atkinson Hyperlegible — single typeface, chosen for legibility at
+ *     conversational distance from across the kitchen.
+ *   • Calm, minimal visual style — no decorative elements, no gradients,
+ *     no rounded-corner pill buttons, no drop shadows.
+ *   • Touch targets ≥ 60×60px on primary actions (brief §12.4).
+ *   • Colour is never the sole carrier of information (brief §12.4, WCAG AA).
+ *   • The empty state is the same visual register as the non-empty state.
+ *     There is no "loading" visual or "nothing here" illustration.
+ */
+
+/* ── Atkinson Hyperlegible ─────────────────────────────────────────────────── */
+
+/* Load the font from the public assets directory so it is bundled with the
+ * application and works offline. The font files are not included in this
+ * repository yet; the @font-face declaration is present so the structure is
+ * clear and the font can be dropped in without changing CSS.
+ *
+ * Until the font files are present, the browser falls through to the generic
+ * sans-serif fallback — legible and acceptable for development.
+ */
+@font-face {
+  font-family: "Atkinson Hyperlegible";
+  src: url("/fonts/AtkinsonHyperlegible-Regular.woff2") format("woff2");
+  font-weight: 400;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Atkinson Hyperlegible";
+  src: url("/fonts/AtkinsonHyperlegible-Bold.woff2") format("woff2");
+  font-weight: 700;
+  font-display: swap;
+}
+
+/* ── Reset and base ────────────────────────────────────────────────────────── */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  font-family: "Atkinson Hyperlegible", system-ui, sans-serif;
+  /* Neutral off-white background — calm, not clinical. */
+  background: #f5f4f0;
+  color: #1a1a1a;
+  /* Type size legible at ~1m (conversational kitchen distance). */
+  font-size: 18px;
+  line-height: 1.5;
+}
+
+/* ── Layout ────────────────────────────────────────────────────────────────── */
+
+.hub {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 2rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+/* ── Capture form ──────────────────────────────────────────────────────────── */
+
+.capture-section {
+  /* Visually first — capture is the system's first promise. */
+}
+
+.capture-label {
+  display: block;
+  font-size: 0.9rem;
+  color: #555;
+  margin-bottom: 0.5rem;
+}
+
+.capture-row {
+  display: flex;
+  gap: 0.5rem;
+  align-items: stretch;
+}
+
+.capture-input {
+  flex: 1;
+  font-family: inherit;
+  font-size: 1.1rem;
+  /* Match the submit button height for visual alignment. */
+  min-height: 60px;
+  padding: 0 1rem;
+  border: 1px solid #ccc;
+  border-radius: 0; /* no rounded corners — calm, not playful */
+  background: #fff;
+  color: inherit;
+  outline: none;
+}
+
+.capture-input:focus {
+  border-color: #555;
+}
+
+.capture-input:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.capture-submit {
+  /* 60×60px minimum touch target (brief §12.4). */
+  min-width: 60px;
+  min-height: 60px;
+  padding: 0 1.25rem;
+  font-family: inherit;
+  font-size: 1.5rem;
+  border: 1px solid #ccc;
+  border-radius: 0;
+  background: #1a1a1a;
+  color: #f5f4f0;
+  cursor: pointer;
+}
+
+.capture-submit:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.capture-submit:not(:disabled):hover {
+  background: #333;
+}
+
+.capture-error {
+  /* Plain text error — no red background, no icon. Colour is not the sole
+   * carrier: the label text conveys the error state. */
+  margin-top: 0.5rem;
+  font-size: 0.9rem;
+  color: #b00;
+}
+
+/* ── Recent items ──────────────────────────────────────────────────────────── */
+
+.recent-section {
+  /* No header — the structure is self-evident from context. */
+}
+
+.empty-state {
+  color: #888;
+  font-size: 0.95rem;
+  /* Same left alignment as items so the transition between states is still. */
+}
+
+.item-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.item {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 1rem;
+  padding: 0.75rem 0;
+  /* Subtle separator between items — a line, not a card with shadow. */
+  border-bottom: 1px solid #e0dfd9;
+}
+
+.item-text {
+  flex: 1;
+  font-size: 1rem;
+}
+
+.item-time {
+  flex-shrink: 0;
+  font-size: 0.85rem;
+  color: #888;
+  /* Tabular figures so times align vertically in the list. */
+  font-variant-numeric: tabular-nums;
+}

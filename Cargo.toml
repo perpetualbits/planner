@@ -1,0 +1,70 @@
+# Workspace manifest for the Amity project.
+#
+# Amity is a household planner that runs on hardware the household owns.
+# This workspace hosts the core domain logic, storage layer, HTTP service,
+# and the Tauri-based hub application.
+#
+# Crate dependency direction (strict, one-way):
+#   amity-service -> amity-storage -> amity-core
+#   hub-tauri  (Tauri shell, talks to amity-service over HTTP)
+#
+# See docs/amity_rust_guidelines.md for the rationale behind this layout.
+
+[workspace]
+members = [
+    "crates/amity-core",
+    "crates/amity-storage",
+    "crates/amity-service",
+    # hub-tauri is NOT in the workspace — Tauri apps require WebKit2GTK/libsoup
+    # system libraries that are not guaranteed in CI. Build it separately with:
+    #   cd apps/hub-tauri && pnpm install && cargo tauri dev
+]
+resolver = "2"
+
+[workspace.package]
+version     = "0.1.0"
+edition     = "2024"
+authors     = ["Roland Nagtegaal <perpetualbits@gmail.com>"]
+license     = "AGPL-3.0-only"
+repository  = "https://github.com/perpetualbits/amity"
+
+# Shared dependency versions pinned here so all crates stay in sync.
+# Each crate opts in by writing `dep.workspace = true`.
+[workspace.dependencies]
+# Async runtime — the only realistic choice for a networked Rust service.
+tokio       = { version = "1", features = ["full"] }
+tokio-util  = { version = "0.7" }
+
+# Serialisation — JSON for API surface, TOML for human-edited config.
+serde       = { version = "1", features = ["derive"] }
+serde_json  = { version = "1" }
+toml        = { version = "0.8" }
+
+# Error handling — thiserror for library crates, anyhow for binaries.
+thiserror   = { version = "2" }
+anyhow      = { version = "1" }
+
+# Structured logging; no log/env_logger — tracing is the chosen path.
+tracing             = { version = "0.1" }
+tracing-subscriber  = { version = "0.3", features = ["env-filter"] }
+
+# HTTP service and middleware.
+axum        = { version = "0.8" }
+tower       = { version = "0.5" }
+tower-http  = { version = "0.6", features = ["trace"] }
+
+# Outbound HTTP (ICS feeds, weather). rustls only — no OpenSSL dependency.
+reqwest     = { version = "0.12", features = ["rustls-tls", "json"], default-features = false }
+
+# Database — both sqlite and postgres features so schema stays portable.
+sqlx        = { version = "0.8", features = ["runtime-tokio-rustls", "sqlite", "postgres", "uuid", "time", "migrate"] }
+
+# IDs — UUID v7 for time-ordered, index-friendly entity identifiers.
+# The `serde` feature enables Serialize/Deserialize on Uuid.
+uuid        = { version = "1", features = ["v7", "serde"] }
+
+# Time — preferred over chrono; cleaner ergonomics, honest about ambiguity.
+time        = { version = "0.3", features = ["serde", "formatting", "parsing", "macros"] }
+
+# Configuration file location per XDG / platform conventions.
+directories = { version = "5" }

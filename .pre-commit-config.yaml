@@ -1,0 +1,28 @@
+# Pre-commit hooks for the Amity project.
+#
+# Install: pip install pre-commit && pre-commit install
+# Run manually: pre-commit run --all-files
+#
+# Hooks:
+#   - cargo fmt: format all Rust files before commit.
+#   - comment-density: fail if a staged Rust file is below the 50% threshold.
+#
+# The format hook runs first so that density is checked on the formatted file,
+# not the pre-format version (which could have different line counts).
+
+repos:
+  - repo: local
+    hooks:
+      - id: cargo-fmt
+        name: cargo fmt
+        language: system
+        entry: cargo fmt --all --
+        pass_filenames: false
+        types: [rust]
+
+      - id: comment-density
+        name: comment density (≥50%)
+        language: system
+        entry: scripts/comment-density.sh
+        pass_filenames: true
+        types: [rust]

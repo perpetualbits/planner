@@ -1,0 +1,48 @@
+# amity-service — the Amity HTTP service.
+#
+# This crate is the runnable service binary. It owns:
+#   • Application configuration loading.
+#   • The axum HTTP server and router setup.
+#   • API handler functions (one module per entity).
+#
+# It depends on amity-core for domain types and amity-storage for persistence.
+# The frontend (hub-tauri) talks to this service over HTTP on localhost.
+#
+# See docs/amity_rust_guidelines.md §"HTTP and web" for crate choices.
+
+[package]
+name        = "amity-service"
+description = "HTTP service for Amity — exposes the API consumed by hub-tauri."
+version.workspace    = true
+edition.workspace    = true
+authors.workspace    = true
+license.workspace    = true
+repository.workspace = true
+
+[[bin]]
+name = "amity-service"
+path = "src/main.rs"
+
+[dependencies]
+amity-core    = { path = "../amity-core" }
+amity-storage = { path = "../amity-storage" }
+
+tokio         = { workspace = true }
+serde         = { workspace = true }
+serde_json    = { workspace = true }
+toml          = { workspace = true }
+anyhow        = { workspace = true }
+tracing       = { workspace = true }
+tracing-subscriber = { workspace = true }
+axum          = { workspace = true }
+tower-http    = { workspace = true }
+sqlx          = { workspace = true }
+uuid          = { workspace = true }
+time          = { workspace = true }
+directories   = { workspace = true }
+
+[dev-dependencies]
+reqwest     = { workspace = true }
+tokio       = { workspace = true }
+tower       = { workspace = true }
+axum        = { workspace = true }

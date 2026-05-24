@@ -1,0 +1,23 @@
+# amity-core — domain types and business logic.
+#
+# This crate has no I/O dependencies. No tokio, no sqlx, no reqwest.
+# Everything here is testable without infrastructure.
+# See docs/amity_rust_guidelines.md §"Workspace structure".
+
+[package]
+name        = "amity-core"
+description = "Domain types and business logic for Amity; no I/O."
+version.workspace    = true
+edition.workspace    = true
+authors.workspace    = true
+license.workspace    = true
+repository.workspace = true
+
+[dependencies]
+serde     = { workspace = true }
+uuid      = { workspace = true }
+time      = { workspace = true }
+thiserror = { workspace = true }
+
+[dev-dependencies]
+serde_json = { workspace = true }

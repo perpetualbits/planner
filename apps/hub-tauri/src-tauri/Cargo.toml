@@ -1,0 +1,35 @@
+# hub-tauri/src-tauri — the Tauri shell for the Amity hub application.
+#
+# This crate is the native side of the Tauri 2 application. Its responsibilities:
+#   • Define Tauri commands that the web frontend can invoke.
+#   • Make HTTP requests to amity-service on behalf of the frontend.
+#
+# The frontend is a SolidJS application in apps/hub-tauri/src/.
+# See apps/hub-tauri/README.md for build instructions.
+
+[package]
+name    = "hub-tauri"
+version = "0.1.0"
+edition = "2024"
+authors = ["Roland Nagtegaal <perpetualbits@gmail.com>"]
+license = "AGPL-3.0-only"
+
+[lib]
+name = "hub_tauri_lib"
+crate-type = ["staticlib", "cdylib", "rlib"]
+
+[[bin]]
+name = "hub-tauri"
+path = "src/main.rs"
+
+[build-dependencies]
+tauri-build = { version = "2", features = [] }
+
+[dependencies]
+tauri       = { version = "2", features = [] }
+serde       = { version = "1", features = ["derive"] }
+serde_json  = { version = "1" }
+# reqwest for calling amity-service from Tauri commands.
+# rustls only — consistent with the rest of the project.
+reqwest     = { version = "0.12", features = ["rustls-tls", "json"], default-features = false }
+tokio       = { version = "1", features = ["full"] }
