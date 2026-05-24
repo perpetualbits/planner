@@ -1,6 +1,6 @@
 # Amity
 
-*A household at peace.*
+*A peaceful home*
 
 ---
 
@@ -42,7 +42,7 @@ The system is a *trustworthy resting place* for the things a mind would otherwis
 
 The system's success is measured not by features used, engagement time, or tasks completed, but by whether the household feels lighter. A good day on Amity is one where the family barely needed to look at it. The product is allowed — encouraged — to recede.
 
-This is what "a household at peace" means in concrete terms. Not a household with no conflict, no obligations, no friction — those are unrealistic and the system would be lying to promise them. A household at peace is one where the inevitable obligations of family life are *held cleanly*, where attention is freed from low-level vigilance, and where the relationships among the people in the home are not burdened by mental clutter that the software could absorb.
+This is what "a peaceful home" means in concrete terms. Not a household with no conflict, no obligations, no friction — those are unrealistic and the system would be lying to promise them. A peaceful home is one where the inevitable obligations of family life are *held cleanly*, where attention is freed from low-level vigilance, and where the relationships among the people in the home are not burdened by mental clutter that the software could absorb.
 
 ## 2. Categorical commitments
 
